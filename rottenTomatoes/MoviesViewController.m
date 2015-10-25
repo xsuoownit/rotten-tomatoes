@@ -11,11 +11,14 @@
 #import <CoreText/CoreText.h>
 #import "MovieDetailsViewController.h"
 
-@interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *movies;
+@property (strong, nonatomic) NSArray *filteredMovies;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (assign) BOOL searchActive;
 
 @end
 
@@ -26,6 +29,9 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    self.searchBar.delegate = self;
+    self.searchActive = NO;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
@@ -66,14 +72,25 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.movies count];
+    if (self.searchActive) {
+        return [self.filteredMovies count];
+    } else {
+        return [self.movies count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    MoviesTableViewCell * cell = [self.tableView dequeueReusableCellWithIdentifier:@"movieCell"];
-    cell.titleLabel.text = self.movies[indexPath.row][@"title"];
+    NSArray *temp;
+    if (self.searchActive) {
+        temp = self.filteredMovies;
+    } else {
+        temp = self.movies;
+    }
     
-    NSString *synopsisText = [self.movies[indexPath.row][@"mpaa_rating"] stringByAppendingString:[@" " stringByAppendingString:self.movies[indexPath.row][@"synopsis"]]];
+    MoviesTableViewCell * cell = [self.tableView dequeueReusableCellWithIdentifier:@"movieCell"];
+    cell.titleLabel.text = temp[indexPath.row][@"title"];
+    
+    NSString *synopsisText = [temp[indexPath.row][@"mpaa_rating"] stringByAppendingString:[@" " stringByAppendingString:temp[indexPath.row][@"synopsis"]]];
 //    NSString *boldFontName = [[UIFont boldSystemFontOfSize:22] fontName];
 //    NSRange boldedRange = NSMakeRange(0, [synopsisText rangeOfString:@" "].location);
 //    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString: synopsisText];
@@ -83,7 +100,7 @@
 //    cell.synopsisLabel.text = [attrString string];
     cell.synopsisLabel.text = synopsisText;
     
-    NSString *originPosterImageUrlStr = self.movies[indexPath.row][@"posters"][@"thumbnail"];
+    NSString *originPosterImageUrlStr = temp[indexPath.row][@"posters"][@"thumbnail"];
     NSString *posterImageUrlStr = [[@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]] stringByReplacingOccurrencesOfString:@"ori" withString:@"tmb"];
     NSURL *posterImageUrl = [NSURL URLWithString:posterImageUrlStr];
     
@@ -99,12 +116,44 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(nullable id)sender NS_AVAILABLE_IOS(5_0) {
+    NSArray *temp;
+    if (self.searchActive) {
+        temp = self.filteredMovies;
+    } else {
+        temp = self.movies;
+    }
+    
     MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    NSString *originPosterImageUrlStr = self.movies[indexPath.row][@"posters"][@"thumbnail"];
+    NSString *originPosterImageUrlStr = temp[indexPath.row][@"posters"][@"thumbnail"];
     movieDetailsViewController.posterOriUrl = [@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]];
-    movieDetailsViewController.movieTitle = self.movies[indexPath.row][@"title"];
-    movieDetailsViewController.synopsis = self.movies[indexPath.row][@"synopsis"];
+    movieDetailsViewController.movieTitle = temp[indexPath.row][@"title"];
+    movieDetailsViewController.synopsis = temp[indexPath.row][@"synopsis"];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    if (searchText.length == 0) {
+        self.searchActive = NO;
+        [self.searchBar setShowsCancelButton:NO];
+    } else {
+        self.searchActive = YES;
+        [self.searchBar setShowsCancelButton:YES];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.title contains[cd] %@", searchText];
+        self.filteredMovies = [self.movies filteredArrayUsingPredicate:predicate];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    searchBar.text=@"";
+    self.searchActive = NO;
+    [searchBar setShowsCancelButton:NO];
+    [searchBar resignFirstResponder];
+    [self.tableView reloadData];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {
