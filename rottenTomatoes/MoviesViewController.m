@@ -12,8 +12,10 @@
 #import "MovieDetailsViewController.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSArray *movies;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
@@ -24,6 +26,13 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
+    [self onRefresh];
+}
+
+- (void) onRefresh {
     NSString *urlString =
     @"https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json";
     
@@ -50,6 +59,7 @@
                                                 } else {
                                                     NSLog(@"An error occurred: %@", error.description);
                                                 }
+                                                [self.refreshControl endRefreshing];
                                             }];
     [task resume];
 }

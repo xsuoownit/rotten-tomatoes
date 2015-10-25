@@ -9,6 +9,7 @@
 #import "MovieDetailsViewController.h"
 
 @interface MovieDetailsViewController ()
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *posterOriImageView;
 
 @end
@@ -17,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     NSURL *imageUrl = [NSURL URLWithString: self.posterOriUrl];
     [self.posterOriImageView setImageWithURL:imageUrl];
     self.title = self.movieTitle;

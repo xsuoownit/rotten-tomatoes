@@ -80,23 +80,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="C56-99-eNs">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ILT-oh-GMX">
+                                <rect key="frame" x="0.0" y="8" width="320" height="560"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="xwb-7F-EuR">
+                                        <rect key="frame" x="0.0" y="-8" width="320" height="568"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <animations/>
+                                    </imageView>
+                                </subviews>
                                 <animations/>
-                            </imageView>
+                            </scrollView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="cXp-be-4Y3"/>
                     <connections>
-                        <outlet property="posterOriImageView" destination="C56-99-eNs" id="Va0-Wi-uWC"/>
+                        <outlet property="posterOriImageView" destination="xwb-7F-EuR" id="npx-Qk-nee"/>
+                        <outlet property="scrollView" destination="ILT-oh-GMX" id="zAX-dQ-xys"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dn7-mW-So3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1074" y="336"/>
+            <point key="canvasLocation" x="1074" y="331"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="3wa-Uu-qp1">
