@@ -9,6 +9,7 @@
 #import "MoviesViewController.h"
 #import "MoviesTableViewCell.h"
 #import <CoreText/CoreText.h>
+#import "MovieDetailsViewController.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -77,7 +78,18 @@
     
     [cell.posterImageView setImageWithURL:posterImageUrl];
     
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
     return cell;
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(nullable id)sender NS_AVAILABLE_IOS(5_0) {
+    MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    NSString *originPosterImageUrlStr = self.movies[indexPath.row][@"posters"][@"thumbnail"];
+    movieDetailsViewController.posterOriUrl = [@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]];
+    movieDetailsViewController.movieTitle = self.movies[indexPath.row][@"title"];
+    movieDetailsViewController.synopsis = self.movies[indexPath.row][@"synopsis"];
 }
 
 - (void)didReceiveMemoryWarning {
