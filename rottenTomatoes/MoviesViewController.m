@@ -53,8 +53,11 @@
     NSURL *url = [NSURL URLWithString:urlString];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
     
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    configuration.timeoutIntervalForRequest = 2.0;
+    
     NSURLSession *session =
-    [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
+    [NSURLSession sessionWithConfiguration:configuration
                                   delegate:nil
                              delegateQueue:[NSOperationQueue mainQueue]];
     
