@@ -120,10 +120,15 @@
     NSURL *posterImageUrl = [NSURL URLWithString:posterImageUrlStr];
     
     NSURLRequest *imageUrlRequest = [NSURLRequest requestWithURL:posterImageUrl];
+    __weak UIImageView *weakSelf = cell.posterImageView;
     [cell.posterImageView setImageWithURLRequest:imageUrlRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [UIView transitionWithView:cell.posterImageView duration:0.3f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-            [cell.posterImageView setImage:image];
-        } completion:nil];
+        UIImage *cachedImage = [[[weakSelf class] sharedImageCache] cachedImageForRequest:request];
+        if (cachedImage) // image was cached
+            [weakSelf setImage:image];
+        else
+            [UIView transitionWithView:weakSelf duration:0.3f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                [weakSelf setImage:image];
+            } completion:nil];
     } failure:nil];
     
     cell.accessoryType = UITableViewCellAccessoryNone;

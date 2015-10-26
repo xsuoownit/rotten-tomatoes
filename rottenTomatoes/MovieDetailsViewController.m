@@ -24,10 +24,15 @@
     
     NSURL *imageUrl = [NSURL URLWithString: self.posterOriUrl];
     NSURLRequest *imageUrlRequest = [NSURLRequest requestWithURL:imageUrl];
+    __weak UIImageView *weakSelf = self.posterOriImageView;
     [self.posterOriImageView setImageWithURLRequest:imageUrlRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [UIView transitionWithView:self.posterOriImageView duration:0.3f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-            [self.posterOriImageView setImage:image];
-        } completion:nil];
+        UIImage *cachedImage = [[[weakSelf class] sharedImageCache] cachedImageForRequest:request];
+        if (cachedImage) // image was cached
+            [weakSelf setImage:image];
+        else
+            [UIView transitionWithView:weakSelf duration:0.3f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                [weakSelf setImage:image];
+            } completion:nil];
     } failure:nil];
     self.title = self.movieTitle;
     
