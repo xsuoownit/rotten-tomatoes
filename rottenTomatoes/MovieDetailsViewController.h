@@ -11,6 +11,7 @@
 
 @interface MovieDetailsViewController : UIViewController
 
+@property (strong, nonatomic) NSString *posterTmbUrl;
 @property (strong, nonatomic) NSString *posterOriUrl;
 @property (strong, nonatomic) NSString *movieTitle;
 @property (strong, nonatomic) NSString *synopsis;

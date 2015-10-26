@@ -151,6 +151,7 @@
     MovieDetailsViewController *movieDetailsViewController = [segue destinationViewController];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     NSString *originPosterImageUrlStr = temp[indexPath.row][@"posters"][@"thumbnail"];
+    movieDetailsViewController.posterTmbUrl = [[@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]] stringByReplacingOccurrencesOfString:@"ori" withString:@"tmb"];
     movieDetailsViewController.posterOriUrl = [@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]];
     movieDetailsViewController.movieTitle = temp[indexPath.row][@"title"];
     movieDetailsViewController.synopsis = temp[indexPath.row][@"synopsis"];

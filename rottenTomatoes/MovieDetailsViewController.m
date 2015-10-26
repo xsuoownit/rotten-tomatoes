@@ -9,9 +9,10 @@
 #import "MovieDetailsViewController.h"
 #import "MBProgressHUD.h"
 
-@interface MovieDetailsViewController ()
+@interface MovieDetailsViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *posterOriImageView;
+@property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
 
 @end
 
@@ -21,6 +22,13 @@
     [super viewDidLoad];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    self.synopsisLabel.text = self.synopsis;
+    [self.synopsisLabel sizeToFit];
+    self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.synopsisLabel.frame.origin.y + self.synopsisLabel.frame.size.height);
+    
+    NSURL *imageTmbUrl = [NSURL URLWithString:self.posterTmbUrl];
+    [self.posterOriImageView setImageWithURL:imageTmbUrl];
     
     NSURL *imageUrl = [NSURL URLWithString: self.posterOriUrl];
     NSURLRequest *imageUrlRequest = [NSURLRequest requestWithURL:imageUrl];
