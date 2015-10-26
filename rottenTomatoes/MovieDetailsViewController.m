@@ -23,7 +23,12 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
     NSURL *imageUrl = [NSURL URLWithString: self.posterOriUrl];
-    [self.posterOriImageView setImageWithURL:imageUrl];
+    NSURLRequest *imageUrlRequest = [NSURLRequest requestWithURL:imageUrl];
+    [self.posterOriImageView setImageWithURLRequest:imageUrlRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [UIView transitionWithView:self.posterOriImageView duration:0.3f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            [self.posterOriImageView setImage:image];
+        } completion:nil];
+    } failure:nil];
     self.title = self.movieTitle;
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];

@@ -11,6 +11,7 @@
 #import <CoreText/CoreText.h>
 #import "MovieDetailsViewController.h"
 #import "MBProgressHUD.h"
+#import <UIImageView+AFNetworking.h>
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
@@ -118,7 +119,12 @@
     NSString *posterImageUrlStr = [[@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]] stringByReplacingOccurrencesOfString:@"ori" withString:@"tmb"];
     NSURL *posterImageUrl = [NSURL URLWithString:posterImageUrlStr];
     
-    [cell.posterImageView setImageWithURL:posterImageUrl];
+    NSURLRequest *imageUrlRequest = [NSURLRequest requestWithURL:posterImageUrl];
+    [cell.posterImageView setImageWithURLRequest:imageUrlRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [UIView transitionWithView:cell.posterImageView duration:0.3f options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            [cell.posterImageView setImage:image];
+        } completion:nil];
+    } failure:nil];
     
     cell.accessoryType = UITableViewCellAccessoryNone;
     
