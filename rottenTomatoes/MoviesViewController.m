@@ -42,6 +42,7 @@
     self.searchActive = NO;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.tintColor = [UIColor whiteColor];
     [self.refreshControl addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self onRefresh];
@@ -155,6 +156,8 @@
     movieDetailsViewController.posterOriUrl = [@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]];
     movieDetailsViewController.movieTitle = temp[indexPath.row][@"title"];
     movieDetailsViewController.synopsis = temp[indexPath.row][@"synopsis"];
+    movieDetailsViewController.criticsScore = temp[indexPath.row][@"ratings"][@"critics_score"];
+    movieDetailsViewController.audienceScore = temp[indexPath.row][@"ratings"][@"audience_score"];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {

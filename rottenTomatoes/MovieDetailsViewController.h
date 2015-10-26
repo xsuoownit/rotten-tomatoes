@@ -15,5 +15,7 @@
 @property (strong, nonatomic) NSString *posterOriUrl;
 @property (strong, nonatomic) NSString *movieTitle;
 @property (strong, nonatomic) NSString *synopsis;
+@property (strong, nonatomic) NSString *criticsScore;
+@property (strong, nonatomic) NSString *audienceScore;
 
 @end

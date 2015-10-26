@@ -13,6 +13,9 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *posterOriImageView;
 @property (weak, nonatomic) IBOutlet UILabel *synopsisLabel;
+@property (weak, nonatomic) IBOutlet UIView *textBGView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 
 @end
 
@@ -23,9 +26,15 @@
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
+    self.title = self.movieTitle;
+    self.titleLabel.text = self.movieTitle;
+    NSString *score = [NSString stringWithFormat:@"%@: %@, %@: %@", @"Audience Score", self.audienceScore, @"Critics Score", self.criticsScore];
+    self.scoreLabel.text = score;
+    
     self.synopsisLabel.text = self.synopsis;
     [self.synopsisLabel sizeToFit];
     self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.synopsisLabel.frame.origin.y + self.synopsisLabel.frame.size.height);
+    self.textBGView.frame = CGRectMake(self.textBGView.frame.origin.x, self.textBGView.frame.origin.y, self.textBGView.frame.size.width, self.scrollView.frame.size.height);
     
     NSURL *imageTmbUrl = [NSURL URLWithString:self.posterTmbUrl];
     [self.posterOriImageView setImageWithURL:imageTmbUrl];
@@ -42,7 +51,6 @@
                 [weakSelf setImage:image];
             } completion:nil];
     } failure:nil];
-    self.title = self.movieTitle;
     
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
