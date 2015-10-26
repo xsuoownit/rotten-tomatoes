@@ -7,6 +7,7 @@
 //
 
 #import "MovieDetailsViewController.h"
+#import "MBProgressHUD.h"
 
 @interface MovieDetailsViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -19,9 +20,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     NSURL *imageUrl = [NSURL URLWithString: self.posterOriUrl];
     [self.posterOriImageView setImageWithURL:imageUrl];
     self.title = self.movieTitle;
+    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

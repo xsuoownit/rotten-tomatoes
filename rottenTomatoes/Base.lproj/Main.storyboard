@@ -65,12 +65,34 @@
                                 <animations/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
+                            <view contentMode="scaleToFill" id="med-3w-HRi">
+                                <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Network Error" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bay-pz-2zq">
+                                        <rect key="frame" x="123" y="11" width="93" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="networkError" id="scg-a1-3Ki">
+                                        <rect key="frame" x="96" y="10" width="23" height="23"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <animations/>
+                                    </imageView>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Movies" id="eWd-JX-pJU"/>
                     <connections>
+                        <outlet property="networkErrorView" destination="med-3w-HRi" id="pCu-xZ-tM1"/>
                         <outlet property="searchBar" destination="3y9-cH-qc3" id="mIJ-dg-rlZ"/>
                         <outlet property="tableView" destination="fue-5W-Jg6" id="cLd-j8-ak8"/>
                     </connections>
@@ -133,4 +155,7 @@
             <point key="canvasLocation" x="162" y="331"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="networkError" width="189" height="171"/>
+    </resources>
 </document>

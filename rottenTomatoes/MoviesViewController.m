@@ -10,6 +10,7 @@
 #import "MoviesTableViewCell.h"
 #import <CoreText/CoreText.h>
 #import "MovieDetailsViewController.h"
+#import "MBProgressHUD.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
@@ -19,6 +20,7 @@
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (assign) BOOL searchActive;
+@property (weak, nonatomic) IBOutlet UIView *networkErrorView;
 
 @end
 
@@ -26,6 +28,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self.networkErrorView setHidden:YES];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -56,6 +63,7 @@
                                                                 NSURLResponse * _Nullable response,
                                                                 NSError * _Nullable error) {
                                                 if (!error) {
+                                                    [self.networkErrorView setHidden:YES];
                                                     NSError *jsonError = nil;
                                                     NSDictionary *responseDictionary =
                                                     [NSJSONSerialization JSONObjectWithData:data
@@ -64,8 +72,11 @@
                                                     self.movies = responseDictionary[@"movies"];
                                                     [self.tableView reloadData];
                                                 } else {
-                                                    NSLog(@"An error occurred: %@", error.description);
+                                                    [self.networkErrorView setHidden:NO];
                                                 }
+                                                dispatch_async(dispatch_get_main_queue(), ^{
+                                                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                                                });
                                                 [self.refreshControl endRefreshing];
                                             }];
     [task resume];

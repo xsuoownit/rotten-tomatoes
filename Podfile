@@ -6,6 +6,7 @@
 target 'rottenTomatoes' do
 
 pod 'AFNetworking', '~> 2.6'
+pod 'MBProgressHUD', '~> 0.9.1'
 
 end
 
