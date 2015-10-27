@@ -16,8 +16,21 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+    [self changeColor:selected];
+}
 
-    // Configure the view for the selected state
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [self changeColor:highlighted];
+}
+
+- (void)changeColor:(BOOL)isChange {
+    if (isChange) {
+        self.titleLabel.textColor = [UIColor grayColor];
+        self.synopsisLabel.textColor = [UIColor grayColor];
+    } else {
+        self.titleLabel.textColor = [UIColor whiteColor];
+        self.synopsisLabel.textColor = [UIColor whiteColor];
+    }
 }
 
 @end
