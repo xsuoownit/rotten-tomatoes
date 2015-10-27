@@ -107,14 +107,10 @@
     cell.titleLabel.text = temp[indexPath.row][@"title"];
     
     NSString *synopsisText = [temp[indexPath.row][@"mpaa_rating"] stringByAppendingString:[@" " stringByAppendingString:temp[indexPath.row][@"synopsis"]]];
-//    NSString *boldFontName = [[UIFont boldSystemFontOfSize:22] fontName];
-//    NSRange boldedRange = NSMakeRange(0, [synopsisText rangeOfString:@" "].location);
-//    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString: synopsisText];
-//    [attrString beginEditing];
-//    [attrString addAttribute:NSFontAttributeName value:boldFontName range:boldedRange];
-//    [attrString endEditing];
-//    cell.synopsisLabel.text = [attrString string];
-    cell.synopsisLabel.text = synopsisText;
+    NSRange boldedRange = NSMakeRange(0, [synopsisText rangeOfString:@" "].location);
+    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString: synopsisText];
+    [attrString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:13] range:boldedRange];
+    cell.synopsisLabel.attributedText = attrString;
     
     NSString *originPosterImageUrlStr = temp[indexPath.row][@"posters"][@"thumbnail"];
     NSString *posterImageUrlStr = [[@"https://content6.flixster.com" stringByAppendingString:[originPosterImageUrlStr componentsSeparatedByString:@".net"][1]] stringByReplacingOccurrencesOfString:@"ori" withString:@"tmb"];
